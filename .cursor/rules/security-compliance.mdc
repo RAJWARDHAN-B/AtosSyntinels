@@ -1,0 +1,17 @@
+# Security, Privacy, and Compliance Rules
+
+- Secrets & Identity
+  - Use Managed Identity; secrets in Key Vault only.
+  - Never commit `.env`; use `.env.example` templates.
+- Data Protection
+  - Encrypt at rest/in transit; CMK where required.
+  - Respect data residency; pin regions appropriately.
+  - Minimize PII; redact logs; segregate tenant data.
+- Network
+  - Private endpoints for model, storage, search. No public egress unless approved.
+- Access
+  - RBAC least privilege; audit all admin actions and approvals.
+- AI Safety
+  - Enable content filters; block prompt injection vectors; constrain tools.
+- Compliance
+  - Keep DPIA/DTIA where applicable; retention policies enforced.

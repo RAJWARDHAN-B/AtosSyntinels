@@ -1,0 +1,21 @@
+# Prompt and RAG Rules
+
+- Structure
+  - System: role, constraints, safety.
+  - Tools: explicit tool names and JSON I/O schemas.
+  - Output: strict JSON with schemas; include enums where applicable.
+- Grounding
+  - Always retrieve and cite top-k passages from Cognitive Search.
+  - Include source ids/URIs for each claim or policy match.
+- Safety
+  - Disallow generating PII beyond provided text; refuse unsafe tasks.
+  - Enforce token and cost limits; fall back to smaller models when needed.
+- Few-shot
+  - Provide high-quality, diverse examples; prefer synthetic + real anonymized.
+- Determinism
+  - Temperature defaults low for extraction/classification; higher for drafts.
+  - Use JSON schema and response validators.
+- Evaluation
+  - Log prompts/responses with redaction. Track accuracy, hallucination rate, cost/latency.
+- Versioning
+  - Version prompts; store in `prompts/` with changelogs and owners.

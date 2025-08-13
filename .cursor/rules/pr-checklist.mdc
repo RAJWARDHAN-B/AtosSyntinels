@@ -1,0 +1,17 @@
+# Pull Request Checklist
+
+- Scope & Impact
+  - [ ] Clear description and linked issue
+  - [ ] Architecture/docs updated (`README`, `docs/`)
+- Code Quality
+  - [ ] Lints/format pass
+  - [ ] Unit tests added/updated; demo still works
+- Security
+  - [ ] No secrets/PII; logs redacted
+  - [ ] Key Vault/MI used for new integrations
+- AI Artifacts
+  - [ ] Prompt changes versioned with examples/evals
+  - [ ] Output schemas validated and tested
+- Operations
+  - [ ] Observability hooks (App Insights) in new functions
+  - [ ] IaC updated for new resources

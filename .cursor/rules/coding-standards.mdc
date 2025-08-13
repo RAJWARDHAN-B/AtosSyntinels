@@ -1,0 +1,28 @@
+# Coding Standards
+
+- Naming
+  - Use meaningful, descriptive names. Avoid 1–2 character names.
+  - Functions: verbs/verb-phrases. Variables: nouns/noun-phrases.
+  - Prefer full words over abbreviations.
+- Types
+  - Prefer static typing where available; annotate public APIs.
+  - Avoid `any`/unsafe casts. Use schema-validated JSON when exchanging with LLMs.
+- Control Flow
+  - Use guard clauses; handle errors and edge cases first.
+  - Avoid deep nesting; keep functions small and focused.
+  - Do not catch and ignore errors; include context in logs.
+- Comments
+  - Explain “why” not “how.” No trivial comments. Keep concise.
+  - Document tricky decisions and assumptions.
+- Formatting
+  - Match project formatter (Prettier/Black). Wrap long lines.
+  - No unrelated reformatting in edits.
+- Security-by-default
+  - Never log secrets or raw PII. Redact sensitive values.
+  - All secrets from environment/Key Vault, not hardcoded.
+- Testing & Eval
+  - Add unit tests for functions with logic.
+  - For prompts, include sample inputs/expected schemas; add evals when feasible.
+- Performance
+  - Batch requests where possible; cache idempotent results.
+  - Use streaming for large LLM outputs.
