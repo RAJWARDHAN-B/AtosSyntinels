@@ -1,5 +1,8 @@
 # Glean by AtosSyntinels — AI Legal Document Intelligence
 
+create a venv - python -m venv venv
+go into it - venv\Scripts\activate
+
 TL;DR: Glean automates contract understanding with AI. It ingests legal documents, classifies clauses, generates summaries, scores risks, and orchestrates human-in-the-loop review using a low-code/no-code experience built on Power Platform and Azure.
 
 ## Problem
@@ -125,6 +128,29 @@ Prereqs: Azure subscription, Power Platform environment, Azure OpenAI access, Az
 
 5) Test run
 - Upload a sample contract; verify annotations, summary, and risk; run an approval
+
+## Zero-Cost Local Mode (No Cloud Required)
+If you need to run everything free-of-cost for development/demo, use the local stack. It replaces paid cloud services with open-source/local alternatives.
+
+Component mapping:
+- Blob Storage → MinIO (S3-compatible, local)
+- Cognitive Search + Vectors → Meilisearch (keyword) + Qdrant (vectors) or FAISS (in-process)
+- Azure OpenAI → Local LLM via Ollama (e.g., `llama3.1` or `mistral`) or LM Studio
+- Document Intelligence (OCR/Layout) → Tesseract OCR + LayoutParser/PaddleOCR + PyMuPDF
+- Functions/Orchestrator → Local FastAPI service (Python) or Node/Express (to be added)
+- Dataverse/Cosmos → SQLite/Postgres (local)
+- Power Apps UI → Streamlit/Gradio web app (local, optional)
+
+Quickstart (local):
+1) Install Docker Desktop
+2) Start infra: `cd local && docker compose up -d`
+3) Install Ollama and pull a model: `ollama pull llama3.1` (or `mistral`)
+4) Use the forthcoming local orchestrator app (FastAPI) to ingest and process documents
+5) Optional UI: run the forthcoming Streamlit app for review
+
+Notes:
+- The local stack is designed for zero cost and offline use. Accuracy may differ from Azure-managed services.
+- Keep `MODE=local` vs `MODE=azure` as a configuration toggle in your orchestrator.
 
 ## Demo Script (≤3 minutes)
 1. Upload a contract in Power Apps; show instant extraction
