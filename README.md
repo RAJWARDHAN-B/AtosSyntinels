@@ -9,7 +9,7 @@ A powerful legal document analysis and extraction tool that helps you understand
 
 ## 📹 Demo Video
 
-*Demo video link will be updated soon*
+Watch our demo video to see Glean in action: [https://youtu.be/Jgjx8pbxDGs](https://youtu.be/Jgjx8pbxDGs)
 
 
 ## 🚀 Features
