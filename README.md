@@ -2,6 +2,16 @@
 
 A powerful legal document analysis and extraction tool that helps you understand and extract key information from legal documents using AI.
 
+## 🌐 Live Demo
+
+- **Deployed Application**: [https://atosglean.streamlit.app/](https://atosglean.streamlit.app/)
+- **GitHub Repository**: [https://github.com/RAJWARDHAN-B/AtosSyntinels](https://github.com/RAJWARDHAN-B/AtosSyntinels)
+
+## 📹 Demo Video
+
+*Demo video link will be updated soon*
+
+
 ## 🚀 Features
 
 - **Document Upload**: Support for PDF, TXT, CSV, XLSX, and DOCX files
