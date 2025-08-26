@@ -1,0 +1,38 @@
+services:
+  # Backend API Service
+  - type: web
+    name: glean-backend
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r backend/requirements.txt
+    startCommand: |
+      cd backend && python main.py
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GOOGLE_API_KEY
+        sync: false
+      - key: PYTHON_VERSION
+        value: 3.9.16
+    healthCheckPath: /docs
+    autoDeploy: true
+
+  # Frontend Service
+  - type: web
+    name: glean-frontend
+    env: static
+    plan: free
+    buildCommand: |
+      cd glean/frontend
+      npm install
+      npm run build
+    staticPublishPath: ./glean/frontend/dist
+    envVars:
+      - key: VITE_BACKEND_URL
+        value: https://glean-backend.onrender.com
+    autoDeploy: true
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
