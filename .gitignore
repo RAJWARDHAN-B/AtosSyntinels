@@ -20,3 +20,20 @@ __pycache__/
 
 # Ignore macOS specific files
 .DS_Store
+
+# Node.js dependencies
+node_modules/
+
+# Build output (Vite)
+dist/
+
+# Vite cache
+.vite/
+
+# Optional: yarn or npm lock files (keep only if you're not committing them)
+# yarn.lock
+# package-lock.json
+# pnpm-lock.yaml
+
+# Optional: local development settings
+*.local
