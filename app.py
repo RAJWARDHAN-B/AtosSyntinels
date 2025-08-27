@@ -82,6 +82,45 @@ Provide a clear, concise answer based strictly on the document context.
 """
 )
 
+# Extraction prompt
+extraction_prompt = ChatPromptTemplate.from_template(
+    """
+You are an expert legal document analyst. Analyze the following content and extract structured key legal details.
+
+Document Content:
+<context>
+{context}
+</context>
+
+Extract:
+1) Entities & Contact Details
+2) Contract Timeline (start, end, notice periods)
+3) Scope of Agreement
+4) SLA (metrics, response times, penalties)
+5) Penalty Clauses
+6) Confidentiality (obligations, duration, scope)
+7) Renewal & Termination (conditions, notice)
+8) Commercial Terms (payment terms, invoicing, penalties)
+9) Risks & Assumptions
+
+Return a concise, readable summary. If a section is missing, state "N/A".
+"""
+)
+
+# Summary prompt
+summary_prompt = ChatPromptTemplate.from_template(
+    """
+You are an expert document summarizer. Provide a concise, clear summary of the document sections below, suitable for business stakeholders.
+
+Document Content:
+<context>
+{context}
+</context>
+
+Summarize the purpose, key points, and any notable obligations/risks. Keep it under 200 words.
+"""
+)
+
 
 # -----------------------------------------------------------------------------
 # Utilities
@@ -128,6 +167,10 @@ class AskRequest(BaseModel):
 
 class ChatRequest(BaseModel):
     doc_id: str
+
+class ExtractRequest(BaseModel):
+    doc_id: str
+    max_chunks: int | None = 2
 
 
 # -----------------------------------------------------------------------------
@@ -200,6 +243,53 @@ async def chat_history(request: ChatRequest):
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
     return {"chat": doc.chat}
+
+
+@app.post("/extract")
+async def extract_key_details(request: ExtractRequest):
+    doc = DOCUMENTS.get(request.doc_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    chunks = doc.text_chunks[: max(1, request.max_chunks or 2)]
+    documents = [Document(page_content=t) for t in chunks]
+
+    if llm is None:
+        return {
+            "answer": "LLM not configured. Showing first chunk as fallback.",
+            "raw": chunks[0] if chunks else "",
+        }
+
+    chain = create_stuff_documents_chain(llm, extraction_prompt)
+    start = time.process_time()
+    response = chain.invoke({"context": documents})
+    _elapsed = time.process_time() - start
+    answer = response.get("answer") if isinstance(response, dict) else str(response)
+
+    return {"answer": answer}
+
+
+@app.post("/summary")
+async def generate_summary(request: ExtractRequest):
+    doc = DOCUMENTS.get(request.doc_id)
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    chunks = doc.text_chunks[: max(1, request.max_chunks or 2)]
+    documents = [Document(page_content=t) for t in chunks]
+
+    if llm is None:
+        return {
+            "answer": "LLM not configured. Showing first chunk as fallback summary:\n\n" + (chunks[0] if chunks else ""),
+        }
+
+    chain = create_stuff_documents_chain(llm, summary_prompt)
+    start = time.process_time()
+    response = chain.invoke({"context": documents})
+    _elapsed = time.process_time() - start
+    answer = response.get("answer") if isinstance(response, dict) else str(response)
+
+    return {"answer": answer}
 
 
 if __name__ == "__main__":

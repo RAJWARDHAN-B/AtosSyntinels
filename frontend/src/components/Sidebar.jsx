@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaBars, FaGripLines, FaFileAlt } from "react-icons/fa"; // Icons
 
-const Sidebar = ({ onSelectDoc }) => {
+const Sidebar = ({ onSelectDoc, onSelectOption }) => {
   const [docs, setDocs] = useState([]);
   const [activeDocId, setActiveDocId] = useState(null);
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -43,6 +43,34 @@ const Sidebar = ({ onSelectDoc }) => {
           className="text-[#64FFDA] p-2 rounded-full hover:bg-[#5be8e4] transition-colors"
         >
           {isCollapsed ? <FaGripLines size={20} /> : <FaBars size={20} />}
+        </button>
+      </div>
+
+      {/* Options */}
+      <div className="space-y-2">
+        <button
+          onClick={() => onSelectOption && onSelectOption("summary")}
+          className="w-full text-left p-3 rounded-full bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(100,255,218,0.1)] transition-all"
+        >
+          {!isCollapsed ? "Summary" : "S"}
+        </button>
+        <button
+          onClick={() => onSelectOption && onSelectOption("key_details")}
+          className="w-full text-left p-3 rounded-full bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(100,255,218,0.1)] transition-all"
+        >
+          {!isCollapsed ? "Key Details" : "K"}
+        </button>
+        <button
+          onClick={() => onSelectOption && onSelectOption("chat")}
+          className="w-full text-left p-3 rounded-full bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(100,255,218,0.1)] transition-all"
+        >
+          {!isCollapsed ? "Chat" : "C"}
+        </button>
+        <button
+          onClick={() => onSelectOption && onSelectOption("history")}
+          className="w-full text-left p-3 rounded-full bg-[rgba(255,255,255,0.04)] hover:bg-[rgba(100,255,218,0.1)] transition-all"
+        >
+          {!isCollapsed ? "Chat History" : "H"}
         </button>
       </div>
 

@@ -43,3 +43,27 @@ export const getDocumentReport = async (docId) => {
     throw error;
   }
 };
+
+export const extractKeyDetails = async (docId) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/extract`, {
+      doc_id: docId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error extracting key details:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const getSummary = async (docId) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/summary`, {
+      doc_id: docId,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching summary:", error.response?.data || error.message);
+    throw error;
+  }
+};
