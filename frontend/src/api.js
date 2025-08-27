@@ -1,8 +1,9 @@
 import axios from "axios";
 
-const API_BASE_URL = "https://glean.onrender.com";
+export const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
 
-export const uploadDocument = async (file, token) => {
+export const uploadDocument = async (file) => {
   const formData = new FormData();
   formData.append("file", file);
 
@@ -10,7 +11,6 @@ export const uploadDocument = async (file, token) => {
     const response = await axios.post(`${API_BASE_URL}/doc`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${token}`,
       },
     });
     return response.data; // { document_id }
@@ -20,11 +20,9 @@ export const uploadDocument = async (file, token) => {
   }
 };
 
-export const getUserDocuments = async (token) => {
+export const getUserDocuments = async () => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/user/docs`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(`${API_BASE_URL}/user/docs`);
     return response.data.docs; // List of document IDs
   } catch (error) {
     console.error("Error fetching user documents:", error.response?.data || error.message);
@@ -32,11 +30,9 @@ export const getUserDocuments = async (token) => {
   }
 };
 
-export const getDocumentReport = async (docId, token) => {
+export const getDocumentReport = async (docId) => {
   try {
-    const response = await axios.get(`${API_BASE_URL}/user/docs/${docId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const response = await axios.get(`${API_BASE_URL}/user/docs/${docId}`);
 
     if (response.status === 204) {
       return { processing: true }; // Document is still being processed

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Sidebar from "../components/Sidebar";
 import Chatbot from "../components/Chatbot";
 import { toast } from "react-toastify";
+import { API_BASE_URL } from "../api";
 
 const Home = () => {
   const [pdfFile, setPdfFile] = useState(null);
@@ -12,8 +13,8 @@ const Home = () => {
   const [summary, setSummary] = useState(null);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
 
-  const AUTH_TOKEN =
-    "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbmFAZ21haWwuY29tIiwiZXhwIjoxNzQ1MjEzMjk5fQ.eO78FuvWjPnfqeC7U8GUJCTuSgCvgZSpmNMcacF4o1k";
+  // Backend base URL
+  const BASE_URL = API_BASE_URL;
 
   // Load document history from local storage on mount
   useEffect(() => {
@@ -132,7 +133,7 @@ const Home = () => {
   // Handle file selection from sidebar
   const handleSelectDoc = (doc) => {
     setSelectedDoc(doc);
-    setPdfUrl(`https://glean.onrender.com/doc/${doc.id}/view`); // Assuming API serves the PDF
+    setPdfUrl(`${BASE_URL}/doc/${doc.id}/view`);
     fetchDocumentSummary(doc.id);
   };
 
@@ -152,9 +153,8 @@ const Home = () => {
 
     setIsUploading(true);
     try {
-      const response = await fetch("https://glean.onrender.com/doc", {
+      const response = await fetch(`${BASE_URL}/doc`, {
         method: "POST",
-        headers: { Authorization: AUTH_TOKEN },
         body: formData,
       });
 
@@ -260,7 +260,7 @@ const Home = () => {
         </div>
       </div>
 
-      <Chatbot />
+      <Chatbot activeDocId={selectedDoc?.id} />
     </div>
   );
 };

@@ -2,16 +2,17 @@ import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { MessageCircle, X } from "lucide-react";
 import { PdfContext } from "../context/PdfContext";
+import { API_BASE_URL } from "../api";
 
-const Chatbot = () => {
+const Chatbot = ({ activeDocId }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { text: "Welcome to Glean! How can I help?", sender: "bot" },
   ]);
   const [input, setInput] = useState("");
-  const activeCase= "67dda0063ccbf5070cf72d0b"; //hardcoded
+  const activeCase = activeDocId; // provided by parent
 
-  const baseUrl = "http://127.0.0.1:8000";
+  const baseUrl = API_BASE_URL;
 
   // Fetch chat history onopen
   useEffect(() => {
@@ -50,7 +51,7 @@ const Chatbot = () => {
     setInput("");
 
     try {
-      const response = await axios.post(`https://glean.onrender.com/ask`, {
+      const response = await axios.post(`${baseUrl}/ask`, {
         doc_id: activeCase,
         query: userQuery,
       });

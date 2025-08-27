@@ -4,8 +4,10 @@ langchain_groq
 PyPDF2
 langchain_google_genai
 langchain
-streamlit
 langchain_community
 python-dotenv
 pypdf
 google-cloud-aiplatform>=1.38
+fastapi
+uvicorn
+python-multipart
